@@ -9,6 +9,10 @@ streaming.example.com:443 {
     transparent
     insecure_skip_verify
   }
+  proxy /command https://localhost:8081 {
+    transparent
+    insecure_skip_verify
+  }
 }
 
 streaming.example.com:80 {

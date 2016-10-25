@@ -20,7 +20,19 @@ func main() {
 func Router() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/events", EventsHandler).Methods("GET")
+	r.HandleFunc("/command", PostHandler).Methods("POST")
 	return r
+}
+
+// PostHandler just logs posted body
+func PostHandler(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	body := &map[string]interface{}{}
+	err := decoder.Decode(&body)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("%+v\n", body)
 }
 
 // EventsHandler sends a simple message every 5 seconds.
@@ -45,7 +57,7 @@ func EventsHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			log.Println("no flush")
 		}
-		time.Sleep(5 * time.Second)
+		time.Sleep(14 * time.Second)
 	}
 	log.Println("conn closed")
 }

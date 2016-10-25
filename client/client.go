@@ -7,6 +7,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/jraedisch/go_sse_example/events"
 	"honnef.co/go/js/dom"
+	"honnef.co/go/js/xhr"
 )
 
 func main() {
@@ -15,6 +16,30 @@ func main() {
 	doc := dom.GetWindow().Document()
 	es.AddEventListener("message", false, generateUListListener(doc, "root"))
 	es.AddEventListener("error", false, generateErrorListener(es))
+
+	buttonID := "button"
+	btn, ok := doc.GetElementByID(buttonID).(*dom.HTMLButtonElement)
+	if !ok {
+		println("%s is not a button", buttonID)
+	}
+	btn.AddEventListener("click", false, sayHi)
+}
+
+func sayHi(cmd dom.Event) {
+	go func() {
+		// js/xhr bindings are much smaller than including net/http. Compare by uncommenting!
+		// resp, err := http.Post("/command", "application/json", strings.NewReader(`{"msg":"hi!"}`))
+		// defer resp.Body.Close()
+		msg := &events.Message{Text: "hi!"}
+		jsn, err := json.Marshal(msg)
+		if err != nil {
+			println(err)
+		}
+		_, err = xhr.Send("POST", "/command", jsn)
+		if err != nil {
+			println(err)
+		}
+	}()
 }
 
 func generateErrorListener(es *eventsource.EventSource) func(*js.Object) {
