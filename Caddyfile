@@ -2,13 +2,16 @@ streaming.example.com:443 {
   tls selfsigned.crt selfsigned.key
   root static
   log / stdout "{combined}"
+
   gzip {
     not /events
   }
+
   proxy /events https://localhost:8081 {
     transparent
     insecure_skip_verify
   }
+
   proxy /command https://localhost:8081 {
     transparent
     insecure_skip_verify

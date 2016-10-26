@@ -19,24 +19,24 @@ func main() {
 // Router returns a router with registered handlers.
 func Router() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/events", EventsHandler).Methods("GET")
-	r.HandleFunc("/command", PostHandler).Methods("POST")
+	r.HandleFunc("/events", eventsHandler).Methods("GET")
+	r.HandleFunc("/command", postHandler).Methods("POST")
 	return r
 }
 
-// PostHandler just logs posted body
-func PostHandler(w http.ResponseWriter, r *http.Request) {
+// postHandler just logs posted body
+func postHandler(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-	body := &map[string]interface{}{}
-	err := decoder.Decode(&body)
+	msg := &events.Message{}
+	err := decoder.Decode(&msg)
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("%+v\n", body)
+	log.Printf("%+v\n", msg)
 }
 
-// EventsHandler sends a simple message every 5 seconds.
-func EventsHandler(w http.ResponseWriter, r *http.Request) {
+// eventsHandler sends a simple message every 5 seconds.
+func eventsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")

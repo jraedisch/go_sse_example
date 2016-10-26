@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	println("initializing")
 	es := eventsource.New("/events")
 	doc := dom.GetWindow().Document()
+
 	es.AddEventListener("message", false, generateUListListener(doc, "root"))
 	es.AddEventListener("error", false, generateErrorListener(es))
 
