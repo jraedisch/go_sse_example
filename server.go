@@ -9,11 +9,12 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jraedisch/go_sse_example/events"
+	"github.com/lucas-clemente/quic-go/h2quic"
 )
 
 func main() {
 	http.Handle("/", Router())
-	log.Fatal(http.ListenAndServeTLS(":8081", "selfsigned.crt", "selfsigned.key", nil))
+	log.Fatal(h2quic.ListenAndServeQUIC(":8081", "selfsigned.crt", "selfsigned.key", nil))
 }
 
 // Router returns a router with registered handlers.

@@ -9,17 +9,18 @@ Setup
 - $ openssl req -x509 -nodes -days 365000 -newkey rsa:2048 -keyout selfsigned.key -out selfsigned.crt
 - add streaming.example.com to /etc/hosts
 - http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates
+- $ go get -u ./...
 - $ go get -u github.com/mholt/caddy/caddy
 - $ go get -u github.com/gopherjs/gopherjs
-- $ go get -u honnef.co/go/js/dom
 - $ gopherjs build -mwv client/client.go -o static/client.min.js
 - $ go run server.go
-- $ sudo caddy
+- $ sudo caddy -quic
 - open https://streaming.example.com
 - done
 
 Misc
 
+- Build caddy yourself to allow flushing via quic protocol! Otherwise remove the -quic flag.
 - There is no hot reloading, but GopherJS will watch for file changes.
   Changes to webapp.go require a restart.
 - Do not vendor GopherJS, since it will result in hard to decipher bugs.
