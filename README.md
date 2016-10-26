@@ -12,7 +12,7 @@ Setup
 - $ go get -u github.com/mholt/caddy/caddy
 - $ go get -u github.com/gopherjs/gopherjs
 - $ go get -u honnef.co/go/js/dom
-- $ gopherjs build -mwv client/client.go -o static/client.min.js
+- $ gopherjs build -wv client/client.go -o static/client.min.js
 - $ go run server.go
 - $ sudo caddy
 - open https://streaming.example.com

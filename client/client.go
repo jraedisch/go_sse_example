@@ -1,13 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"net/http"
 
 	"github.com/gopherjs/eventsource"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/jraedisch/go_sse_example/events"
 	"honnef.co/go/js/dom"
-	"honnef.co/go/js/xhr"
 )
 
 func main() {
@@ -27,15 +28,13 @@ func main() {
 
 func sayHi(cmd dom.Event) {
 	go func() {
-		// js/xhr bindings are much smaller than including net/http. Compare by uncommenting!
-		// resp, err := http.Post("/command", "application/json", strings.NewReader(`{"msg":"hi!"}`))
-		// defer resp.Body.Close()
 		msg := &events.Message{Text: "hi!"}
 		jsn, err := json.Marshal(msg)
 		if err != nil {
 			println(err)
 		}
-		_, err = xhr.Send("POST", "/command", jsn)
+		resp, err := http.Post("/command", "application/json", bytes.NewReader(jsn))
+		defer resp.Body.Close()
 		if err != nil {
 			println(err)
 		}
