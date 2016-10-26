@@ -9,12 +9,12 @@ Setup
 - $ openssl req -x509 -nodes -days 365000 -newkey rsa:2048 -keyout selfsigned.key -out selfsigned.crt
 - add streaming.example.com to /etc/hosts
 - http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates
-- get caddy for your environment: https://caddyserver.com/download
+- $ go get -u github.com/mholt/caddy/caddy
 - $ go get -u github.com/gopherjs/gopherjs
 - $ go get -u honnef.co/go/js/dom
 - $ gopherjs build -mwv client/client.go -o static/client.min.js
 - $ go run server.go
-- $ sudo ./caddy
+- $ sudo caddy
 - open https://streaming.example.com
 - done
 
